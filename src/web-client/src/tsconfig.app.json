@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../web-client",
+    "module": "es2015",
+    "types": []
+  },
+  "exclude": [
+    "web-client/test.ts",
+    "**/*.spec.ts"
+  ]
+}

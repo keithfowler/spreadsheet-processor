@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col" *ngIf="!authenticationService.isLoggedIn">
+    <h1>Login</h1>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" id="username" name="username" required [(ngModel)]="model.username">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required [(ngModel)]="model.password">
+      </div>
+
+      <button [disabled]="submitDisabled" type="submit" class="btn btn-success">Login</button>
+    </form>
+  </div>
+</div>

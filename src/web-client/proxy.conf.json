@@ -1,0 +1,8 @@
+{
+    "/svc/**": {
+        "target": "http://localhost:4300",
+        "changeOrigin": true,
+        "secure": false,
+        "logLevel": "debug"
+    }
+}

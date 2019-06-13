@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col">
+    <h3>Select an Excel file for import</h3>
+
+    <file-drop headertext="Drop files here" (onFileDrop)="dropped($event)">
+      
+    </file-drop>
+    <span *ngIf="fileName != ''">{{fileName}}</span>
+    <div *ngIf="sheets.length > 0">
+      Select a sheet to import
+      <ul>
+        <li *ngFor="let sheet of sheets; let i=index">
+          <button (click)="selectSheet(i)">{{sheet}}</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div *ngIf="dataMap.mapping.length > 0" class="row">
+  <div class="col-12">
+    <select #dataType class="form-control">
+      <option *ngFor="let type of dataTypes" [value]="type">{{type}}</option>
+    </select>
+
+    <select class="form-control" [(ngModel)]="selectedMapping" (change)="mappingSelected()">
+      <option [value]="">Use an exsisting mapping</option>
+      <option *ngFor="let name of mappingNames | async" [ngValue]="name">{{name}}</option>
+    </select>
+
+    <table class="table table-hover">
+      <tbody>
+        <tr scope="row" *ngFor="let mapping of dataMap.mapping">
+          <td scope="col" class="text-left col-2">{{mapping.from}}</td>
+          <td scope="col" class="text-left col-3">
+            <ng-select placeholder="Select a field" [(ngModel)]="mapping.to">
+              <ng-template ng-header-tmp>
+                <div class="input-group input-group-sm mb-6">
+                  <input #newField type="text" class="form-control" placeholder="Create new field" aria-label="Create new field" aria-describedby="basic-addon2">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="button" (click)="createField(newField.value); newField.value = ''">New</button>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-option *ngFor="let field of knownFields | async" [value]="field">{{field}}</ng-option>
+            </ng-select>
+          </td>
+          <td scope="col" class="text-left col-3">
+            <select class="form-control" [(ngModel)]="mapping.mapType">
+              <option>text</option>
+              <option>date/time</option>
+              <option>number</option>
+            </select>
+          </td>
+          <td class="text-left col-3" scope="col">{{mapping.value}}</td>
+          <td class="text-right col-1" scope="col">
+            <button class="btn" [ngClass]="mapping.isExcluded ? 'btn-outline-primary' : 'btn-outline-primary'" (click)="toggleFieldFromMap(mapping);">{{mapping.isExcluded ? 'Include' : 'Exclude'}}</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <input #mappingNameInput class="form-control" type="text" placeholder="Mapping name" [value]="selectedMapping != 'Use an exsisting mapping' ? selectedMapping : ''" />
+    <button class="btn btn-primary" [disabled]="saveMappingIsDisabled || mappingNameInput.value == ''" (click)="saveMapping(mappingNameInput.value)">Save Mapping</button>
+
+    <button class="btn btn-primary" [disabled]="isImportingData" (click)="saveData(dataType.value)">Import Data</button>
+    <span *ngIf="isImportingData">Importing...</span>
+  </div>
+</div>
