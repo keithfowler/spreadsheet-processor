@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { FileDropModule } from 'ngx-file-drop';
+import { NgxFileDropModule } from 'ngx-file-drop';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
@@ -24,7 +24,7 @@ import { ErrorInterceptor, JwtInterceptor } from './helpers';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    FileDropModule,
+    NgxFileDropModule,
     NgSelectModule
   ],
   providers: [

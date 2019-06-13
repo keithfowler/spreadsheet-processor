@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UploadEvent, UploadFile, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
+import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 import { read, WorkBook, WorkSheet, utils } from 'xlsx';
 
 import { DataMapping, DataMappingPair } from './data-mapping';
@@ -15,7 +15,7 @@ import { DataAccessService } from './data-access.service';
 })
 export class DataImportComponent implements OnInit {
 
-  public files: UploadFile[];
+  public files: NgxFileDropEntry[];
   public fileName: string;
   public sheets: string[];
   public dataMap: DataMapping;
@@ -47,9 +47,9 @@ export class DataImportComponent implements OnInit {
     console.log('DataImportComponet constructed');
   }
 
-  public dropped(event: UploadEvent) {
-    this.files = event.files;
-    for (const droppedFile of event.files) {
+  public dropped(files: NgxFileDropEntry[]) {
+    this.files = files;
+    for (const droppedFile of files) {
 
       // Is it a file?
       if (droppedFile.fileEntry.isFile) {

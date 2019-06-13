@@ -2,9 +2,9 @@
   <div class="col">
     <h3>Select an Excel file for import</h3>
 
-    <file-drop headertext="Drop files here" (onFileDrop)="dropped($event)">
-      
-    </file-drop>
+    <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+
+    </ngx-file-drop>
     <span *ngIf="fileName != ''">{{fileName}}</span>
     <div *ngIf="sheets.length > 0">
       Select a sheet to import
@@ -35,9 +35,11 @@
             <ng-select placeholder="Select a field" [(ngModel)]="mapping.to">
               <ng-template ng-header-tmp>
                 <div class="input-group input-group-sm mb-6">
-                  <input #newField type="text" class="form-control" placeholder="Create new field" aria-label="Create new field" aria-describedby="basic-addon2">
+                  <input #newField type="text" class="form-control" placeholder="Create new field"
+                    aria-label="Create new field" aria-describedby="basic-addon2">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" (click)="createField(newField.value); newField.value = ''">New</button>
+                    <button class="btn btn-outline-primary" type="button"
+                      (click)="createField(newField.value); newField.value = ''">New</button>
                   </div>
                 </div>
               </ng-template>
@@ -53,13 +55,16 @@
           </td>
           <td class="text-left col-3" scope="col">{{mapping.value}}</td>
           <td class="text-right col-1" scope="col">
-            <button class="btn" [ngClass]="mapping.isExcluded ? 'btn-outline-primary' : 'btn-outline-primary'" (click)="toggleFieldFromMap(mapping);">{{mapping.isExcluded ? 'Include' : 'Exclude'}}</button>
+            <button class="btn" [ngClass]="mapping.isExcluded ? 'btn-outline-primary' : 'btn-outline-primary'"
+              (click)="toggleFieldFromMap(mapping);">{{mapping.isExcluded ? 'Include' : 'Exclude'}}</button>
           </td>
         </tr>
       </tbody>
     </table>
-    <input #mappingNameInput class="form-control" type="text" placeholder="Mapping name" [value]="selectedMapping != 'Use an exsisting mapping' ? selectedMapping : ''" />
-    <button class="btn btn-primary" [disabled]="saveMappingIsDisabled || mappingNameInput.value == ''" (click)="saveMapping(mappingNameInput.value)">Save Mapping</button>
+    <input #mappingNameInput class="form-control" type="text" placeholder="Mapping name"
+      [value]="selectedMapping != 'Use an exsisting mapping' ? selectedMapping : ''" />
+    <button class="btn btn-primary" [disabled]="saveMappingIsDisabled || mappingNameInput.value == ''"
+      (click)="saveMapping(mappingNameInput.value)">Save Mapping</button>
 
     <button class="btn btn-primary" [disabled]="isImportingData" (click)="saveData(dataType.value)">Import Data</button>
     <span *ngIf="isImportingData">Importing...</span>
