@@ -20,7 +20,7 @@ export class AuthRouter {
             const response = await this._authSvc.login(req.body.username, req.body.password);
 
             if (response.errors) {
-                res.status(401).json({ 'message': 'Invalid credentials', 'errors': response.errors });
+                res.status(200).json({ 'errorMessage': 'Invalid credentials', 'errors': response.errors });
             } else {
                 res.status(200).json(response);
             }

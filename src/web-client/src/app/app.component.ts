@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from './services/authentication-service';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,6 @@ import { AuthenticationService } from './services/authentication-service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public title = 'SI Data Site';
   constructor(public authService: AuthenticationService) {
 
   }
