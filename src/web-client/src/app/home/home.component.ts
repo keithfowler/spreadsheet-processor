@@ -11,26 +11,27 @@ export class HomeComponent implements OnInit {
   public model: UserModel;
   public isLoggedIn: boolean;
   public submitDisabled: boolean;
-  public isValid: boolean = true;
+  public isValid: boolean;
 
   constructor(public authenticationService: AuthenticationService) {
-    this.model = new UserModel();
+    this.isValid = true;
     this.submitDisabled = false;
+    this.model = new UserModel();
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (currentUser && currentUser.token) {
       this.isLoggedIn = true;
     }
   }
 
-  onSubmit() {
+  public onSubmit() {
     this.submitDisabled = true;
     if (this.model.username != '' && this.model.password != '') {
       const userName = this.model.username.toLowerCase();
 
-      this.authenticationService.login(this.model.username, this.model.password).subscribe(success => {
+      this.authenticationService.login(userName, this.model.password).subscribe(success => {
         this.isValid = success;
         this.submitDisabled = false;
         this.model.password = '';

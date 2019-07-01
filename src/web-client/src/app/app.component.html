@@ -7,10 +7,14 @@
       </h1>
 
       <nav class="nav">
-          <a class="nav-link" routerLink="/" routerLinkActive="disabled" [routerLinkActiveOptions]="{exact: true}">Home</a>
-          <a *ngIf="authService.isLoggedIn" class="nav-link" routerLink="/import" routerLinkActive="disabled" [routerLinkActiveOptions]="{exact: true}">Import Data</a>
-          <a *ngIf="authService.isLoggedIn" class="nav-link" href="#" (click)="logout()">Logout</a>
-        </nav>
+        <a class="nav-link" routerLink="/" routerLinkActive="disabled" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a *ngIf="authService.isLoggedIn" class="nav-link" routerLink="/import" routerLinkActive="disabled" [routerLinkActiveOptions]="{exact: true}">Import Data</a>
+        <a *ngIf="authService.isLoggedIn" class="nav-link" href="#" (click)="logout()">Logout</a>
+      </nav>
+
+      <p *ngFor="let notification of notificationService.notifications">
+        <ngb-alert [type]="notification.isError ? 'danger' : 'info'" (close)="notificationService.removeNotification(notification)">{{ notification.message }}</ngb-alert>
+      </p>
 
       <router-outlet></router-outlet>
     </div>

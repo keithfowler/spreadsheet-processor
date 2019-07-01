@@ -6,7 +6,6 @@ import moment from 'moment';
 import { User, IUser } from '../models';
 
 export class AuthService {
-
     private _jwtSecret: string;
 
     constructor() {
@@ -41,7 +40,7 @@ export class AuthService {
 
     public async login(username: string, password: string): Promise<any> {
         try {
-            const user = await User.findOne({ 'username': username }).exec();
+            const user = await User.findOne({ 'username': username });
 
             if (user === null) { throw new Error('User not found'); }
 
@@ -77,18 +76,17 @@ export class AuthService {
             passReqToCallback: true
         };
 
-        return new Strategy(params, (req, payload: any, done) => {
-            User.findOne({ 'username': payload.username }, (err, user) => {
-                if (err) {
-                    return done(err);
-                }
-
+        return new Strategy(params, async (req, payload: any, done) => {
+            try {
+                const user = await User.findOne({ 'username': payload.username });
                 if (user === null) {
                     return done(null, false, { message: 'The user in the token was not found' });
                 }
 
                 return done(null, { _id: user._id, username: user.username });
-            });
+            } catch (err) {
+                return done(err);
+            }
         });
     }
 }

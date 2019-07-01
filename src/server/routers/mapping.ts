@@ -10,14 +10,13 @@ export class MappingRouter {
 
     getRouter(): Router {
         // Get
-
         this.router.get('/field-names', async (req: Request, res: Response) => {
             try {
                 const names = await DataMappingFieldNames.find({}).distinct('name');
 
                 res.json(names);
             } catch (err) {
-                res.status(500);
+                res.status(500).send('error');
             }
         });
 
@@ -27,7 +26,7 @@ export class MappingRouter {
 
                 res.json(names);
             } catch (err) {
-                res.status(500);
+                res.status(500).send('error');
             }
         });
 
@@ -35,12 +34,14 @@ export class MappingRouter {
             try {
                 const mapping = await DataMapping.findOne({ name: req.params.name });
 
-                console.log(`mapping ${mapping}`);
+                if (mapping === null) {
+                    res.status(404).send('not found');
+                }
 
                 res.json(mapping);
             } catch (err) {
                 console.log(err);
-                res.status(500);
+                res.status(500).send('error');
             }
         });
 
@@ -49,9 +50,9 @@ export class MappingRouter {
             try {
                 await DataMappingFieldNames.create(req.body);
 
-                res.status(200).json({ status: 'ok' });
+                res.status(200).json(true);
             } catch (err) {
-
+                res.status(500).send('error');
             }
         });
 
@@ -59,20 +60,28 @@ export class MappingRouter {
             try {
                 await DataMapping.create(req.body);
 
-                res.status(200).json({ status: 'ok' });
+                res.status(200).json(true);
             } catch (err) {
-                console.log(err);
-
-                res.status(500);
+                res.status(500).send('error');
             }
         });
 
-        // Put
-        this.router.put('/:id', (req: Request, res: Response) => {
+        this.router.put('/:name', async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                const mapping = await DataMapping.findOne({ name: req.params.name });
 
+                if (mapping === null) {
+                    res.status(404).send('not found');
+                }
+
+                await mapping.update(req.body);
+
+                res.json(mapping);
+            } catch (err) {
+                console.log(err);
+                res.status(500).send('error');
+            }
         });
-
-        // Delete
 
         return this.router;
     }
