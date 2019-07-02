@@ -7,13 +7,11 @@ import { User, IUser } from '../models';
 
 export class AuthService {
     private _jwtSecret: string;
+    private _jwtExpiration: number;
 
     constructor() {
-        if (process.env.NODE_ENV == 'development') {
-            this._jwtSecret = 'dev only setting';
-        } else {
-            this._jwtSecret = process.env.JWT_SECRET;
-        }
+        this._jwtSecret = process.env.JWT_SECRET;
+        this._jwtExpiration = Number(process.env.JWT_TOKEN_EXPIRATION);
     }
 
     public initialize() {
@@ -56,7 +54,7 @@ export class AuthService {
     }
 
     private _genToken(user: IUser): Object {
-        const expires = moment().utc().add({ days: 7 }).unix();
+        const expires = moment().utc().add({ days: this._jwtExpiration }).unix();
         const token = jwt.sign({
             exp: expires,
             username: user.username

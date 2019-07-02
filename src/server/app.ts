@@ -13,37 +13,32 @@ export class App {
 
     constructor() {
         this.expressApp = express();
-
-        this.setup();
     }
 
     public async setup() {
         mongoose.Promise = global.Promise;
-        let connString = 'mongodb://localhost/si-data';
         const connOptions = {
             useNewUrlParser: true
         };
 
-        if (process.env.NODE_ENV != 'development') {
-            connString = process.env.MONGODB_URI;
-            const mongoUsername = process.env.MONGODB_USERNAME;
-            const mongoPassword = process.env.MONGODB_PASSWORD;
+        if (process.env.NODE_ENV !== 'development') {
+            const mongoUsername = process.env.DB_USERNAME;
+            const mongoPassword = process.env.DB_PASSWORD;
             connOptions['auth'] = {
                 user: mongoUsername,
                 password: mongoPassword
             };
         }
 
-        await mongoose.connect(connString, connOptions);
+        await mongoose.connect(process.env.DB_CONN_STRING, connOptions);
 
-        this.expressApp.set('port', process.env.PORT || 4300);
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(expressValidator());
 
         const authSvc = new AuthService();
         this.expressApp.use(authSvc.initialize());
 
-        if (process.env.NODE_ENV == 'production') {
+        if (process.env.NODE_ENV === 'production') {
             this.expressApp.use('/',
                 express.static(path.join(__dirname, 'client'), { maxAge: 31557600000, index: 'index.html' })
             );
